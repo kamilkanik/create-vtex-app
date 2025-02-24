@@ -1,0 +1,26 @@
+[
+<% if (messages) { %>  {
+    "section": "storeSetup",
+    "titleId": "<%= appSlug %>.navigation.label-group",
+    "searchKeyWordsHelpers": "<%= appSlug %>.navigation.search.kws",
+    "subSectionItems": [
+      {
+        "labelId": "<%= appSlug %>.navigation.label-first-page",
+        "path": "/admin/<%= appSlug %>/first-page",
+        "searchKeyWordsHelpers": "<%= appSlug %>.navigation.first-page.search.kws"
+      }
+    ]
+  }<% } else { %>  {
+    "section": "storeSetup",
+    "titleId": "<%= appName %>",
+    "searchKeyWordsHelpers": "<%= appName %>",
+    "subSectionItems": [
+      {
+        "labelId": "First Page",
+        "path": "/admin/<%= appSlug %>/first-page",
+        "searchKeyWordsHelpers": "<%= appName %>, first page"
+      }
+    ]
+  }
+<% } %>
+]

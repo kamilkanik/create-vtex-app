@@ -1,0 +1,7 @@
+type Query {
+    firstQuery: String
+}
+
+type Mutation {
+    firstMutation(number: Int): String
+}

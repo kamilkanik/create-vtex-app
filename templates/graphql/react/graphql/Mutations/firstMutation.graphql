@@ -1,0 +1,3 @@
+mutation firstMutation($number: Int!){
+    firstMutation(number: $number)
+}

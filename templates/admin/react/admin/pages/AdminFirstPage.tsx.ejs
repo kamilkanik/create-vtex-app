@@ -1,0 +1,8 @@
+<% if(messages) { %>import { FormattedMessage } from 'react-intl';
+<% } %>export const AdminFirstPage = () => {
+    return (
+        <div>
+            <% if(messages) { %><FormattedMessage id="admin/first-page.text" defaultMessage="My first admin page" /><% } else { %>My first admin page<% } %>
+        </div>
+    )
+}
