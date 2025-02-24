@@ -7,7 +7,7 @@
   "billingOptions": {
     "type": "free",
     "support": {
-      "url": "https://synerise.com/support/"
+      "url": "https://example.com/support/"
     },
     "availableCountries": [
       "*"
