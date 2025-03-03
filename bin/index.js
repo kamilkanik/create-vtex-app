@@ -140,7 +140,7 @@ async function generateProject() {
             await addPixel(projectPath, options)
         }
 
-        console.success('Generated project...');
+        console.info('Generated project...');
     } catch (err) {
         console.error('Error while generating the project: ', err);
     }
