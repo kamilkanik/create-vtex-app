@@ -1,4 +1,4 @@
-import { firstMutation } from './first-mutation.ts'
+import { firstMutation } from './first-mutation'
 
 export default {
     firstMutation,

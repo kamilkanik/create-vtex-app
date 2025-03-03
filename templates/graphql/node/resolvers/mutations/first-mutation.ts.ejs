@@ -1,6 +1,6 @@
 import { MutationFirstMutationArgs } from '<%= vendor %>.<%= appSlug %>'
 
-export async function firstMutation(_: void, args: MutationFirstMutationArgs, ctx: Context){
+export async function firstMutation(_: void, args: MutationFirstMutationArgs, _ctx: Context){
 
     return "firstMutation" + args.number
 }

@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 const path = require('path');
+const {input, checkbox} = require('@inquirer/prompts');
 const {program} = require('commander');
+const slugify = require('slugify')
 const fs = require('fs-extra');
 const ejs = require('ejs');
-const slugify = require('slugify')
-const {input, checkbox} = require('@inquirer/prompts');
 
 program
     .version('0.0.1')
@@ -60,7 +60,7 @@ async function gatherConfiguration() {
             {
                 name: "admin",
                 value: "admin",
-                description: "admin application builder with sample admin page",
+                description: "Admin application builder with sample admin page",
                 checked: cliOptions.admin,
             },
             {
@@ -139,8 +139,10 @@ async function generateProject() {
         if(options.pixel){
             await addPixel(projectPath, options)
         }
+
+        console.success('Generated project...');
     } catch (err) {
-        console.error('Błąd podczas generowania projektu:', err);
+        console.error('Error while generating the project: ', err);
     }
 }
 
@@ -160,7 +162,7 @@ async function createMainFiles(projectPath, options) {
         ...(options.node && {node: "7.x"}),
         ...(options.react && {react: "3.x"}),
         ...(options.admin && {admin: "0.x", react: "3.x"}),
-        ...(options.messages && {messages: "0.x"}),
+        ...(options.messages && {messages: "1.x"}),
         ...(options.store && {store: "0.x"}),
         ...(options.masterdata && {masterdata: "1.x"}),
         ...(options.graphql && {graphql: "1.x"}),

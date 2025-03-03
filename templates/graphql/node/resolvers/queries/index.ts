@@ -1,4 +1,4 @@
-import { firstQuery } from './first-query.ts'
+import { firstQuery } from './first-query'
 
 export default {
     firstQuery,
