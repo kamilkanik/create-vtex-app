@@ -20,6 +20,7 @@ program
     .option('--store', 'Use the store builder', false)
     .option('--pixel', 'Use the pixel builder', false)
     .option('--masterdata', 'Use the masterdata builder', false)
+    .option('--themeblock', 'Use the theme block builder', false)
     .parse(process.argv);
 
 const cliOptions = program.opts();
@@ -92,6 +93,12 @@ async function gatherConfiguration() {
                 value: "store",
                 description: "Store application builder",
                 checked: cliOptions.store,
+            },
+            {
+                name: "themeblock",
+                value: "themeblock",
+                description: "Theme block application builder",
+                checked: cliOptions.themeblock,
             }
         ]
     })
@@ -108,6 +115,7 @@ async function gatherConfiguration() {
         masterdata: builders.find(builderName => builderName === "masterdata") || false,
         pixel: builders.find(builderName => builderName === "pixel") || false,
         store: builders.find(builderName => builderName === "store") || false,
+        themeblock: builders.find(builderName => builderName === "themeblock") || false,
     };
 }
 
@@ -139,6 +147,9 @@ async function generateProject() {
         if(options.pixel){
             await addPixel(projectPath, options)
         }
+        if(options.themeblock){
+            await addThemeBlock(projectPath, options)
+        }
 
         console.info('Generated project...');
     } catch (err) {
@@ -167,6 +178,7 @@ async function createMainFiles(projectPath, options) {
         ...(options.masterdata && {masterdata: "1.x"}),
         ...(options.graphql && {graphql: "1.x"}),
         ...(options.pixel && {pixel: "0.x", react: "3.x", store: "0.x"}),
+        ...(options.themeblock && {react: "3.x", store: "0.x"}),
     };
 
     await fs.writeJson(manifestPath, manifestJson, {spaces: 2});
@@ -239,6 +251,21 @@ async function addPixel(projectPath, options) {
     const pixelTemplatePath = path.join(__dirname, '../templates', "pixel");
     const reactDirectoryTemplatePath = path.join(pixelTemplatePath, 'react');
     const storeDirectoryTemplatePath = path.join(pixelTemplatePath, 'store');
+
+    const reactDirectoryPath = path.join(projectPath, "react");
+    const storeDirectoryPath = path.join(projectPath, "store");
+
+    await fs.ensureDir(reactDirectoryPath);
+    await fs.ensureDir(storeDirectoryPath);
+
+    await copyTemplate(reactDirectoryTemplatePath, reactDirectoryPath, options);
+    await copyTemplate(storeDirectoryTemplatePath, storeDirectoryPath, options);
+}
+
+async function addThemeBlock(projectPath, options) {
+    const themeBlockTemplatePath = path.join(__dirname, '../templates', "themeblock");
+    const reactDirectoryTemplatePath = path.join(themeBlockTemplatePath, 'react');
+    const storeDirectoryTemplatePath = path.join(themeBlockTemplatePath, 'store');
 
     const reactDirectoryPath = path.join(projectPath, "react");
     const storeDirectoryPath = path.join(projectPath, "store");
