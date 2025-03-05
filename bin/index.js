@@ -93,7 +93,14 @@ async function gatherConfiguration() {
                 description: "Store application builder",
                 checked: cliOptions.store,
             }
-        ]
+        ],
+        validate: (choices) => {
+            if (!choices || !choices.length) {
+                return 'You must select at least one of the builders.'
+            }
+
+            return true;
+        },
     })
 
     return {
@@ -140,7 +147,7 @@ async function generateProject() {
             await addPixel(projectPath, options)
         }
 
-        console.info('Generated project...');
+        console.log("\x1b[32mProject generated successfully!\x1b[0m");
     } catch (err) {
         console.error('Error while generating the project: ', err);
     }
@@ -163,7 +170,7 @@ async function createMainFiles(projectPath, options) {
         ...(options.react && {react: "3.x"}),
         ...(options.admin && {admin: "0.x", react: "3.x"}),
         ...(options.messages && {messages: "1.x"}),
-        ...(options.store && {store: "0.x"}),
+        ...(options.store && {store: "0.x", react: "3.x"}),
         ...(options.masterdata && {masterdata: "1.x"}),
         ...(options.graphql && {graphql: "1.x"}),
         ...(options.pixel && {pixel: "0.x", react: "3.x", store: "0.x"}),
