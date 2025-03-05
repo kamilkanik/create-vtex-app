@@ -20,7 +20,6 @@ program
     .option('--store', 'Use the store builder', false)
     .option('--pixel', 'Use the pixel builder', false)
     .option('--masterdata', 'Use the masterdata builder', false)
-    .option('--themeblock', 'Use the theme block builder', false)
     .parse(process.argv);
 
 const cliOptions = program.opts();
@@ -94,12 +93,6 @@ async function gatherConfiguration() {
                 description: "Store application builder",
                 checked: cliOptions.store,
             },
-            {
-                name: "themeblock",
-                value: "themeblock",
-                description: "Theme block application builder",
-                checked: cliOptions.themeblock,
-            }
         ]
     })
 
@@ -115,7 +108,6 @@ async function gatherConfiguration() {
         masterdata: builders.find(builderName => builderName === "masterdata") || false,
         pixel: builders.find(builderName => builderName === "pixel") || false,
         store: builders.find(builderName => builderName === "store") || false,
-        themeblock: builders.find(builderName => builderName === "themeblock") || false,
     };
 }
 
@@ -147,8 +139,8 @@ async function generateProject() {
         if(options.pixel){
             await addPixel(projectPath, options)
         }
-        if(options.themeblock){
-            await addThemeBlock(projectPath, options)
+        if(options.store){
+            await addStore(projectPath, options)
         }
 
         console.info('Generated project...');
@@ -174,11 +166,10 @@ async function createMainFiles(projectPath, options) {
         ...(options.react && {react: "3.x"}),
         ...(options.admin && {admin: "0.x", react: "3.x"}),
         ...(options.messages && {messages: "1.x"}),
-        ...(options.store && {store: "0.x"}),
+        ...(options.store && {react: "3.x", store: "0.x"}),
         ...(options.masterdata && {masterdata: "1.x"}),
         ...(options.graphql && {graphql: "1.x"}),
         ...(options.pixel && {pixel: "0.x", react: "3.x", store: "0.x"}),
-        ...(options.themeblock && {react: "3.x", store: "0.x"}),
     };
 
     await fs.writeJson(manifestPath, manifestJson, {spaces: 2});
@@ -262,10 +253,10 @@ async function addPixel(projectPath, options) {
     await copyTemplate(storeDirectoryTemplatePath, storeDirectoryPath, options);
 }
 
-async function addThemeBlock(projectPath, options) {
-    const themeBlockTemplatePath = path.join(__dirname, '../templates', "themeblock");
-    const reactDirectoryTemplatePath = path.join(themeBlockTemplatePath, 'react');
-    const storeDirectoryTemplatePath = path.join(themeBlockTemplatePath, 'store');
+async function addStore(projectPath, options) {
+    const storeTemplatePath = path.join(__dirname, '../templates', "store");
+    const reactDirectoryTemplatePath = path.join(storeTemplatePath, 'react');
+    const storeDirectoryTemplatePath = path.join(storeTemplatePath, 'store');
 
     const reactDirectoryPath = path.join(projectPath, "react");
     const storeDirectoryPath = path.join(projectPath, "store");
