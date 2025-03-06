@@ -146,6 +146,9 @@ async function generateProject() {
         if(options.pixel){
             await addPixel(projectPath, options)
         }
+        if(options.store){
+            await addStore(projectPath, options)
+        }
 
         console.log("\x1b[32mProject generated successfully!\x1b[0m");
     } catch (err) {
@@ -175,6 +178,13 @@ async function createMainFiles(projectPath, options) {
         ...(options.graphql && {graphql: "1.x"}),
         ...(options.pixel && {pixel: "0.x", react: "3.x", store: "0.x"}),
     };
+
+    if(options.pixel){
+        manifestJson.dependencies = {
+            ...manifestJson.dependencies,
+            "vtex.pixel-interfaces": "1.x",
+        }
+    }
 
     await fs.writeJson(manifestPath, manifestJson, {spaces: 2});
 }
@@ -246,6 +256,21 @@ async function addPixel(projectPath, options) {
     const pixelTemplatePath = path.join(__dirname, '../templates', "pixel");
     const reactDirectoryTemplatePath = path.join(pixelTemplatePath, 'react');
     const storeDirectoryTemplatePath = path.join(pixelTemplatePath, 'store');
+
+    const reactDirectoryPath = path.join(projectPath, "react");
+    const storeDirectoryPath = path.join(projectPath, "store");
+
+    await fs.ensureDir(reactDirectoryPath);
+    await fs.ensureDir(storeDirectoryPath);
+
+    await copyTemplate(reactDirectoryTemplatePath, reactDirectoryPath, options);
+    await copyTemplate(storeDirectoryTemplatePath, storeDirectoryPath, options);
+}
+
+async function addStore(projectPath, options) {
+    const storeTemplatePath = path.join(__dirname, '../templates', "store");
+    const reactDirectoryTemplatePath = path.join(storeTemplatePath, 'react');
+    const storeDirectoryTemplatePath = path.join(storeTemplatePath, 'store');
 
     const reactDirectoryPath = path.join(projectPath, "react");
     const storeDirectoryPath = path.join(projectPath, "store");
