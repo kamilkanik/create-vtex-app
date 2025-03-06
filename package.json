@@ -1,10 +1,21 @@
 {
   "name": "create-vtex-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "type": "commonjs",
   "bin": {
     "create-vtex-app": "./bin/index.js"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kamilkanik/create-vtex-app.git"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "bugs": {
+    "url": "https://github.com/kamilkanik/create-vtex-app/issues"
   },
   "contributors": [
     {
