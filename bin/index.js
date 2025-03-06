@@ -179,6 +179,13 @@ async function createMainFiles(projectPath, options) {
         ...(options.pixel && {pixel: "0.x", react: "3.x", store: "0.x"}),
     };
 
+    if(options.pixel){
+        manifestJson.dependencies = {
+            ...manifestJson.dependencies,
+            "vtex.pixel-interfaces": "1.x",
+        }
+    }
+
     await fs.writeJson(manifestPath, manifestJson, {spaces: 2});
 }
 
